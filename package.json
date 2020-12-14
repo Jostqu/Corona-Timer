@@ -1,3 +1,4 @@
+
 {
   "name": "schnelltest-timer",
   "version": "0.1.0",
@@ -21,6 +22,7 @@
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
+    "globals": { "_": true },
     "root": true,
     "env": {
       "node": true
