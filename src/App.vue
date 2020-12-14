@@ -1,9 +1,10 @@
 <template>
-  <div class="container-fluid no-padding">
+  <div class="container">
     <button class="btn btn-light" @click="addnewTimer">Add</button>
 
     <div class="row" v-bind:key="i" v-for="(timer,i) in groupedTimers">
-      <div v-for="(timer,index) in groupedTimers[i]" v-bind:key="index" class="col-lg">
+      <div v-for="(timer,index) in groupedTimers[i]" v-bind:key="index" class="col-lg-4">
+        <div class="card-body">
         <span class="float-right" style="cursor:pointer" @click="removeTimer()">X</span>
         <h4 class="card-title"> Test {{i*3+index+1}}</h4>
         <div v-if="timers[i*3+index].time >= 120000 && timers[i*3+index].time < 121000 && timers[i*3+index].section === 0" class="alert alert-danger blink_me" role="alert">
@@ -23,6 +24,7 @@
           <button class="btn btn-success" @click="start(i*3+index)" v-if="timers[i*3+index].time >= 120000 && timers[i*3+index]._2time <= 0 ">Weiter</button>
           <button class="btn btn-danger"  @click="reset(i*3+index)">Reset</button>
         </div>
+      </div>
     </div>
   </div>
   </div>
@@ -52,7 +54,8 @@ export default {
         }
       ]
     }
-  },
+  }
+  ,
   computed:{
     groupedTimers() {
       return _.chunk(this.timers,3)
