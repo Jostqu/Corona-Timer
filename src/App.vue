@@ -55,7 +55,7 @@ export default {
   },
   computed:{
     groupedTimers() {
-      return _.chunk(this.timers,5)
+      return _.chunk(this.timers,3)
     }
   },
   methods: {
@@ -95,13 +95,13 @@ export default {
           this.timers[index]._2time = Date.now()-this.timers[index]._2Start;
         }
         if(this.timers[index].time >= 120000 && this.timers[index].time < 121000 && this.timers[index].section !== 1 ){
-          clearInterval(this.timer[index]);
+          clearInterval(this.timer[index].timer);
           this.timers[index].run =0;
           const audio = new Audio(require('./234524_foolboymedia_notification-up-1 (online-audio-converter.com).mp3'));
           audio.play();
         }
         if(this.timers[index]._2time >= 900000){
-          clearInterval(this.timer[index]);
+          clearInterval(this.timer[index].timer);
           this.timers[index].run =0;
           const audio = new Audio(require('./234524_foolboymedia_notification-up-1 (online-audio-converter.com).mp3'));
           audio.play();
@@ -111,7 +111,7 @@ export default {
     },
     reset(index) {
 
-      clearInterval(this.timer[index]);
+      clearInterval(this.timer[index].timer);
       this.timers[index].time = 0;
       this.timers[index].section = 0;
       this.timers[index].run = 0;
@@ -131,15 +131,5 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-.form-control {
-  border: 0;
-}
+
 </style>
