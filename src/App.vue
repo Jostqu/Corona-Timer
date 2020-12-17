@@ -4,6 +4,7 @@
     <button class="btn btn-light mx-1" @click="removeTimer()">Remove</button>
     <div class="row no-gutters" v-bind:key="i" v-for="(row,i) in groupedTimers">
       <div v-for="(timer_col,index) in groupedTimers[i]" v-bind:key="index" class="col-sm nopadding">
+        <button class="btn btn-danger float-right btn-circle btn-md mr-3"  @click="reset(timer_col)">Reset</button>
         <div class="card-body no-padding no-gutters">
         <h6 class="card-title no-padding"> Test {{i*per_collum+index+1}}</h6>
         <div v-if="timer_col.time >= 120000 && timer_col.section === 0" class="alert alert-danger no-padding .alert" role="alert">
@@ -23,7 +24,7 @@
           <div class="display:inline" v-if="timer_col.section === 1">{{formattedElapsedTime(timer_col._2time)}}</div>
           <button class="btn  btn-success "  @click="start(timer_col)" v-if="timer_col.run !== 1 && timer_col.time < 120000">Start</button>
           <button class="btn  btn-success "  @click="weiter(timer_col)" v-if="timer_col.time >= 120000 && timer_col.run !== 1 && timer_col._2time === 0">Weiter</button>
-          <button class="btn btn-danger"  @click="reset(timer_col)">Reset</button>
+
         </div>
       </div>
     </div>
@@ -133,7 +134,20 @@ export default {
 </script>
 
 <style>
+.btn-circle.btn-md {
+  width: 40px;
+  height: 40px;
+  padding: 0px 0px;
+  border-radius: 20px;
+  font-size: 14px;
+  text-align: center;
+}
 .alert {
   font-size: 70%;
+}
+#right-panel-link {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>
