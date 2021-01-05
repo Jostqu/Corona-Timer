@@ -34,7 +34,8 @@
             <div class="progress-bar pg-beginning" role="progressbar"  v-bind:style="{ width: timers[i*per_collum+index].time/1000*0.0980392156862742 + '%'}" v-bind:aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             <div class="progress-bar bg-warning" role="progressbar"  v-bind:style="{width: ((timers[i*per_collum+index]._2time/1000*0.0980392156862742)) + '%'}" v-bind:aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
-          <div class="display:inline" v-if="timer_col.section === 0">{{formattedElapsedTime(timer_col.time)}}</div>
+          <div class="display:inline" v-if="timer_col.section === 0 && timer_col.time < 120000">{{formattedElapsedTime(timer_col.time)}}</div>
+          <div class="display:inline red" v-if="timer_col.section === 0 && timer_col.overtime > 0">{{formattedElapsedTime(timer_col.overtime)}}</div>
           <div class="display:inline" v-if="timer_col.section === 1">{{formattedElapsedTime(timer_col._2time)}}</div>
           <button class="btn  btn-success "  @click="start(timer_col)" v-if="timer_col.run !== 1 && timer_col.time < Phase_1">Start</button>
           <button class="btn  btn-success "  @click="weiter(timer_col)" v-if="timer_col.time >= Phase_1 && timer_col.run !== 1 && timer_col._2time === 0">Weiter</button>
@@ -69,6 +70,8 @@ export default {
           section: 0,
           _2time: 0,
           time: 0,
+          overtime: 0,
+          start_overtime: 0,
           timer: undefined
         }
       ]
@@ -124,7 +127,9 @@ export default {
         section: 0,
         _2time: 0,
         time: 0,
-        timer: undefined
+        timer: undefined,
+        start_overtime: 0,
+        overtime: 0
       })
     },
     start(timer) {
@@ -141,10 +146,16 @@ export default {
           this.audio.src = require('./test.mp3');
           this.audio.currentTime = 0;
           this.audio.play();
+          timer.start_overtime = Date.now();
+          timer.timer = setInterval(() => {
+            timer.overtime = Date.now()-timer.start_overtime;
+          }, 1000);
         }
       }, 1000);
     },
     weiter(timer){
+      timer.time = 120000;
+      clearInterval(timer.timer);
       timer._2Start = Date.now()
       timer.section = 1;
       timer.run = 1;
@@ -172,6 +183,9 @@ export default {
       timer._2time = 0;
       timer._2Start = 0;
       timer.start = 0;
+      timer.run = 0;
+      timer.overtime = 0;
+      timer.start_overtime = 0;
     },
     formattedElapsedTime(elapsedTimee) {
       const date = new Date(null);
@@ -252,5 +266,8 @@ export default {
     top: 15px;
     right: 35px;
   }
+}
+.red{
+  color: red;
 }
 </style>
